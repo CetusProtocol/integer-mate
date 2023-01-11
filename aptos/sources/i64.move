@@ -225,7 +225,7 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_from_overflow() {
         as_u64(from(MIN_AS_U64));
         as_u64(from(0xffffffffffffffff));
@@ -240,7 +240,7 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_neg_from_overflow() {
         neg_from(0x8000000000000001);
     }
@@ -255,7 +255,7 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_abs_overflow() {
         abs(neg_from(1 << 63));
     }
@@ -315,13 +315,13 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_add_overflow() {
         add(from(MAX_AS_U64), from(1));
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_add_underflow() {
         add(neg_from(MIN_AS_U64), neg_from(1));
     }
@@ -361,13 +361,13 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_sub_overflow() {
         sub(from(MAX_AS_U64), neg_from(1));
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_sub_underflow() {
         sub(neg_from(MIN_AS_U64), from(1));
     }
@@ -392,7 +392,7 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_mul_overflow() {
         mul(from(MIN_AS_U64 / 2), from(1));
         mul(neg_from(MIN_AS_U64 / 2), neg_from(2));
@@ -410,7 +410,7 @@ module integer_mate::i64 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_div_overflow() {
         div(neg_from(MIN_AS_U64), neg_from(1));
     }

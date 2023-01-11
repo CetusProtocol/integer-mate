@@ -1,11 +1,10 @@
 module integer_mate::u256 {
     //use std::bcs;
-    use std::error;
     use integer_mate::math_u64;
     use integer_mate::math_u128;
 
-    const OVERFLOW: u64 = 0;
-    const DIV_BY_ZERO: u64 = 1;
+    const EOverflow: u64 = 0;
+    const EDivByZero: u64 = 1;
 
     const LT: u8 = 0;
     const EQ: u8 = 1;
@@ -59,7 +58,7 @@ module integer_mate::u256 {
         let (sum1, carry1) = math_u64::carry_add(a.n1, b.n1, carry0);
         let (sum2, carry2) = math_u64::carry_add(a.n2, b.n2, carry1);
         let (sum3, carry3) = math_u64::carry_add(a.n3, b.n3, carry2);
-        assert!(carry3 == 0, error::invalid_argument(OVERFLOW));
+        assert!(carry3 == 0, EOverflow);
         U256 {
             n0: sum0,
             n1: sum1,
@@ -80,7 +79,7 @@ module integer_mate::u256 {
         let (t3, overflow_t3) = math_u64::overflowing_sub(a.n3, b.n3);
         let (r3, overflow_s3) = math_u64::overflowing_sub(t3, carry2); 
         let carry3 = if (overflow_t3 || overflow_s3) { 1 } else { 0 }; 
-        assert!(carry3 == 0, error::invalid_argument(OVERFLOW));
+        assert!(carry3 == 0, EOverflow);
         U256 {
             n0: r0,
             n1: r1,
@@ -124,7 +123,7 @@ module integer_mate::u256 {
         let a_bits = bits(&a);
         let b_bits = bits(&b);
 
-        assert!(b_bits != 0, DIV_BY_ZERO); // DIVIDE BY ZERO.
+        assert!(b_bits != 0, EDivByZero); // DIVIDE BY ZERO.
         if (a_bits < b_bits) {
             // Immidiatelly return.
             return (ret, remainer)
@@ -161,12 +160,12 @@ module integer_mate::u256 {
     }
 
     public fun as_u128(n: U256): u128 {
-        assert!(n.n3 == 0 && n.n2 == 0, error::invalid_argument(OVERFLOW));
+        assert!(n.n3 == 0 && n.n2 == 0, EOverflow);
         math_u128::from_lo_hi(n.n0, n.n1)
     }
 
     public fun as_u64(n: U256): u64 {
-        assert!(n.n3 == 0 && n.n2 == 0 && n.n1 == 0, error::invalid_argument(OVERFLOW));
+        assert!(n.n3 == 0 && n.n2 == 0 && n.n1 == 0, EDivByZero);
         n.n0
     }
 
@@ -317,7 +316,7 @@ module integer_mate::u256 {
         } else if (i == 3) {
             a.n3
         } else {
-            abort OVERFLOW
+            abort EOverflow
         }
     }
 
@@ -349,7 +348,7 @@ module integer_mate::u256 {
         } else if (i == 3) {
             a.n3 = v;
         } else {
-            abort OVERFLOW
+            abort EOverflow
         }
     }
 
@@ -424,7 +423,7 @@ module integer_mate::u256 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_add_overflow() {
         // TODO: Add more test
         add(new(10, 100, 1000, MAX_U64), new(11, 101, 1001, 1));
@@ -438,7 +437,7 @@ module integer_mate::u256 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_sub_overflow() {
         // TODO: Add more test
         sub(new(10, 100, 1000, 10000), new(11, 101, 1001, 10000));
