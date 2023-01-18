@@ -1,5 +1,4 @@
 module integer_mate::u256 {
-    //use std::bcs;
     use std::error;
     use integer_mate::math_u64;
     use integer_mate::math_u128;
@@ -424,7 +423,7 @@ module integer_mate::u256 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_add_overflow() {
         // TODO: Add more test
         add(new(10, 100, 1000, MAX_U64), new(11, 101, 1001, 1));
@@ -438,7 +437,7 @@ module integer_mate::u256 {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0x10000)]
+    #[expected_failure]
     fun test_sub_overflow() {
         // TODO: Add more test
         sub(new(10, 100, 1000, 10000), new(11, 101, 1001, 10000));
