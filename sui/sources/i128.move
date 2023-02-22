@@ -1,5 +1,6 @@
 module integer_mate::i128 {
     use integer_mate::i64;
+    use integer_mate::i32;
 
     const EOverflow: u64 = 0;
 
@@ -163,6 +164,14 @@ module integer_mate::i128 {
            return i64::neg_from((abs_u128(v) as u64))
         } else {
             return i64::from((abs_u128(v) as u64))
+        }
+    }
+
+    public fun as_i32(v: I128): i32::I32 {
+        if (is_neg(v)) {
+            return i32::neg_from((abs_u128(v) as u32))
+        } else {
+            return i32::from((abs_u128(v) as u32))
         }
     }
 
