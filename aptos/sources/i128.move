@@ -1,8 +1,8 @@
 module integer_mate::i128 {
-    use std::error;
     use integer_mate::i64;
+    use integer_mate::i32;
 
-    const OVERFLOW: u64 = 0;
+    const EOverflow: u64 = 0;
 
     const MIN_AS_U128: u128 = 1 << 127;
     const MAX_AS_U128: u128 = 0x7fffffffffffffffffffffffffffffff;
@@ -22,14 +22,14 @@ module integer_mate::i128 {
     }
 
     public fun from(v: u128): I128 {
-        assert!(v <= MAX_AS_U128, error::invalid_argument(OVERFLOW));
+        assert!(v <= MAX_AS_U128, EOverflow);
         I128 {
             bits: v
         }
     }
 
     public fun neg_from(v: u128): I128 {
-        assert!(v <= MIN_AS_U128, error::invalid_argument(OVERFLOW));
+        assert!(v <= MIN_AS_U128, EOverflow);
         if (v == 0) {
             I128 {
                 bits: v
@@ -66,7 +66,7 @@ module integer_mate::i128 {
     public fun add(num1: I128, num2: I128): I128 {
         let sum = wrapping_add(num1, num2);
         let overflow = (sign(num1) & sign(num2) & u8_neg(sign(sum))) + (u8_neg(sign(num1)) & u8_neg(sign(num2)) & sign(sum));
-        assert!(overflow == 0, error::invalid_argument(OVERFLOW));
+        assert!(overflow == 0, EOverflow);
         sum
     }
 
@@ -119,7 +119,7 @@ module integer_mate::i128 {
         if (sign(v) == 0) {
             v
         } else {
-            assert!(v.bits > MIN_AS_U128, error::invalid_argument(OVERFLOW));
+            assert!(v.bits > MIN_AS_U128, EOverflow);
             I128 {
                 bits: u128_neg(v.bits - 1)
             }
@@ -164,6 +164,14 @@ module integer_mate::i128 {
            return i64::neg_from((abs_u128(v) as u64))
         } else {
             return i64::from((abs_u128(v) as u64))
+        }
+    }
+
+    public fun as_i32(v: I128): i32::I32 {
+        if (is_neg(v)) {
+            return i32::neg_from((abs_u128(v) as u32))
+        } else {
+            return i32::from((abs_u128(v) as u32))
         }
     }
 

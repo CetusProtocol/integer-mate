@@ -11,14 +11,14 @@ integer_mate = "0x45ba3bca9e81591a852df423105ecf2978dc03a5c0223033669bb889656a94
 [dependencies.MoveStdlib]
 git = "https://github.com/aptos-labs/aptos-core.git"
 subdir = "aptos-move/framework/move-stdlib"
-rev = "devnet"
+rev = "main"
 
 [dependencies.AptosFramework]
 git = 'https://github.com/aptos-labs/aptos-core.git'
-rev = 'devnet'
+rev = 'main'
 subdir = 'aptos-move/framework/aptos-framework'
 
 [dependencies.AptosStdlib]
 git = "https://github.com/aptos-labs/aptos-core.git"
 subdir = "aptos-move/framework/aptos-stdlib"
-rev = "devnet"
+rev = "main"
