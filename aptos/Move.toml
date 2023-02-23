@@ -3,22 +3,4 @@ name = 'IntegerMate'
 version = '1.0.0'
 
 [addresses]
-std = "0x1"
-aptos_std = "0x1"
-aptos_framework = "0x1"
-integer_mate = "0x45ba3bca9e81591a852df423105ecf2978dc03a5c0223033669bb889656a94a8"
-
-[dependencies.MoveStdlib]
-git = "https://github.com/aptos-labs/aptos-core.git"
-subdir = "aptos-move/framework/move-stdlib"
-rev = "devnet"
-
-[dependencies.AptosFramework]
-git = 'https://github.com/aptos-labs/aptos-core.git'
-rev = 'devnet'
-subdir = 'aptos-move/framework/aptos-framework'
-
-[dependencies.AptosStdlib]
-git = "https://github.com/aptos-labs/aptos-core.git"
-subdir = "aptos-move/framework/aptos-stdlib"
-rev = "devnet"
+integer_mate = "_"
