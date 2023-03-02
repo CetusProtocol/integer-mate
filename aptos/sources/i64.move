@@ -1,7 +1,5 @@
 module integer_mate::i64 {
-    use std::error;
-
-    const OVERFLOW: u64 = 0;
+    const EOverflow: u64 = 0;
 
     const MIN_AS_U64: u64 = 1 << 63;
     const MAX_AS_U64: u64 = 0x7fffffffffffffff;
@@ -27,14 +25,14 @@ module integer_mate::i64 {
     }
 
     public fun from(v: u64): I64 {
-        assert!(v <= MAX_AS_U64, error::invalid_argument(OVERFLOW));
+        assert!(v <= MAX_AS_U64, EOverflow);
         I64 {
             bits: v
         }
     }
 
     public fun neg_from(v: u64): I64 {
-        assert!(v <= MIN_AS_U64, error::invalid_argument(OVERFLOW));
+        assert!(v <= MIN_AS_U64, EOverflow);
         if (v == 0) {
             I64 {
                 bits: v
@@ -65,7 +63,7 @@ module integer_mate::i64 {
         let overflow = (sign(num1) & sign(num2) & u8_neg(sign(sum))) + (u8_neg(sign(num1)) & u8_neg(sign(num2)) & sign(
             sum
         ));
-        assert!(overflow == 0, error::invalid_argument(OVERFLOW));
+        assert!(overflow == 0, EOverflow);
         sum
     }
 
@@ -103,7 +101,7 @@ module integer_mate::i64 {
         if (sign(v) == 0) {
             v
         } else {
-            assert!(v.bits > MIN_AS_U64, error::invalid_argument(OVERFLOW));
+            assert!(v.bits > MIN_AS_U64, EOverflow);
             I64 {
                 bits: u64_neg(v.bits - 1)
             }

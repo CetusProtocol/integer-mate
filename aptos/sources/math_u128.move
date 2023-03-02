@@ -47,13 +47,12 @@ module integer_mate::math_u128 {
     }
 
     public fun full_mul(n1: u128, n2: u128): (u128, u128) {
-        let c0 = lo_u128(n1) * lo_u128(n2);
-        let a1 = lo_u128(n1) * hi_u128(n2);
-        let b0 = hi_u128(n1) * lo_u128(n2);
-        let c1 = hi_u128(c0) + lo_u128(a1) + lo_u128(b0);
-        c0 = ((lo(c1) as u128) << 64) + (lo(c0) as u128);
-        c1 = hi_u128(n1) *  hi_u128(n2) + hi_u128(c1) + hi_u128(a1) + hi_u128(b0);
-        (c0, c1)
+        let hi_mask: u256 = 0xffffffffffffffffffffffffffffffff00000000000000000000000000000000;
+        let lo_mask: u256 = 0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff;
+        let r = (n1 as u256) * (n2 as u256);
+        let hi = (((r & hi_mask) >> 128) as u128);
+        let lo = ((r & lo_mask) as u128);
+        (lo, hi)
     }
 
     public fun hi(n: u128): u64 {
