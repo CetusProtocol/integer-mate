@@ -6,19 +6,9 @@ version = '1.0.0'
 std = "0x1"
 aptos_std = "0x1"
 aptos_framework = "0x1"
-integer_mate = "0x45ba3bca9e81591a852df423105ecf2978dc03a5c0223033669bb889656a94a8"
+integer_mate = "_"
 
 [dependencies.MoveStdlib]
 git = "https://github.com/aptos-labs/aptos-core.git"
 subdir = "aptos-move/framework/move-stdlib"
-rev = "main"
-
-[dependencies.AptosFramework]
-git = 'https://github.com/aptos-labs/aptos-core.git'
-rev = 'main'
-subdir = 'aptos-move/framework/aptos-framework'
-
-[dependencies.AptosStdlib]
-git = "https://github.com/aptos-labs/aptos-core.git"
-subdir = "aptos-move/framework/aptos-stdlib"
-rev = "main"
+rev = "daf06ee6207ac5dc25adaf970d85b841ad68fe3e"
