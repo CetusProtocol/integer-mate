@@ -1,7 +1,4 @@
 module integer_mate::math_u256 {
-    const MASK_U128: u256 = 0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff;
-    const MASK_U64: u256  = 0x000000000000000000000000000000000000000000000000ffffffffffffffff;
-
     public fun div_mod(num: u256, denom: u256): (u256, u256) {
         let p = num / denom;
         let r: u256 = num - (p * denom);

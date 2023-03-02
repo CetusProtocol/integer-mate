@@ -1,6 +1,7 @@
 # Added by cargo
 /sui/.idea
 /aptos/.idea
+/aptos/.aptos
 /sui/build
 /aptos/build
 /build
