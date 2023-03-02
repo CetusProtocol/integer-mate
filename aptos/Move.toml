@@ -11,4 +11,4 @@ integer_mate = "_"
 [dependencies.MoveStdlib]
 git = "https://github.com/aptos-labs/aptos-core.git"
 subdir = "aptos-move/framework/move-stdlib"
-rev = "devnet"
+rev = "40d169ad5ace6298a84b0f401b4b5e7ccce701fc"
