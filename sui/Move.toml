@@ -3,7 +3,7 @@ name = "IntegerMate"
 version = "0.0.1"
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework", rev = "testnet-0.28.0" }
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "main" }
 
 [addresses]
 integer_mate =  "0x0"
