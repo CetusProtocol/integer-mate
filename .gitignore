@@ -1,4 +1,5 @@
 /sui/.idea
+/sui/sui.log.*
 /aptos/.idea
 /aptos/.aptos
 /sui/build
