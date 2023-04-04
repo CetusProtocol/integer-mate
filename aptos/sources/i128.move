@@ -188,18 +188,10 @@ module integer_mate::i128 {
         if (num1.bits == num2.bits) return EQ;
         if (sign(num1) > sign(num2)) return LT;
         if (sign(num1) < sign(num2)) return GT;
-        if (sign(num1) == 0) {
-            if (num1.bits > num2.bits) {
-                return GT
-            } else {
-                return LT
-            }
+        if (num1.bits > num2.bits) {
+            return GT
         } else {
-            if (num1.bits < num2.bits) {
-                return LT
-            } else {
-                return GT
-            }
+            return LT
         }
     }
 

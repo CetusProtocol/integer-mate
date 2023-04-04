@@ -1,10 +1,10 @@
 module integer_mate::math_u128 {
-    use integer_mate::math_u64;
 
     const MAX_U128: u128 = 0xffffffffffffffffffffffffffffffff;
 
     const HI_64_MASK: u128 = 0xffffffffffffffff0000000000000000;
     const LO_64_MASK: u128 = 0x0000000000000000ffffffffffffffff;
+    const LO_128_MASK: u256 = 0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff;
 
     const DIV_BY_ZERO: u64 = 1;
 
@@ -14,9 +14,12 @@ module integer_mate::math_u128 {
     }
 
     public fun overflowing_add(n1: u128, n2: u128): (u128, bool) {
-        let (sum0, carry0) = math_u64::carry_add(lo(n1), lo(n2), 0);
-        let (sum1, carry1) = math_u64::carry_add(hi(n1), hi(n2), carry0);
-        ((((sum1 as u128) << 64) + (sum0 as u128)), carry1 == 1)
+        let sum = (n1 as u256) + (n2 as u256);
+        if (sum > (MAX_U128 as u256)) {
+            (((sum & LO_128_MASK) as u128), true)
+        } else {
+            ((sum as u128), false)
+        }
     }
     
     public fun wrapping_sub(n1: u128, n2: u128): u128 {
