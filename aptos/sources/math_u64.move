@@ -50,4 +50,8 @@ module integer_mate::math_u64 {
             ((sum as u64), 0)
         }
     }
+
+    public fun add_check(n1: u64, n2: u64): bool {
+        (MAX_U64 - n1 >= n2)
+    }
 }

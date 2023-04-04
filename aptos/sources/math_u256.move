@@ -1,4 +1,6 @@
 module integer_mate::math_u256 {
+    const MAX_U256: u256 = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+
     public fun div_mod(num: u256, denom: u256): (u256, u256) {
         let p = num / denom;
         let r: u256 = num - (p * denom);
@@ -29,6 +31,10 @@ module integer_mate::math_u256 {
         } else {
             p
         }
+    }
+
+    public fun add_check(num1: u256, num2: u256): bool {
+        (MAX_U256 - num1 >= num2)
     }
 
     #[test]

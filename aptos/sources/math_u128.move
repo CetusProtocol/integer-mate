@@ -106,6 +106,10 @@ module integer_mate::math_u128 {
         }
     }
 
+    public fun add_check(num1: u128, num2: u128): bool {
+        (MAX_U128 - num1 >= num2)
+    }
+
     #[test]
     fun test_overflowing_add() {
         let (m, o) = overflowing_add(10, 10);
