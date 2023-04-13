@@ -445,6 +445,7 @@ module integer_mate::i32 {
         assert!(cmp(from(0), neg_from(1)) == GT, 0);
         assert!(cmp(neg_from(0), neg_from(1)) == GT, 0);
         assert!(cmp(neg_from(1), neg_from(0)) == LT, 0);
+        assert!(!lt(from(5347), neg_from(765)), 0);
 
         assert!(cmp(neg_from(MIN_AS_U32), from(MAX_AS_U32)) == LT, 0);
         assert!(cmp(from(MAX_AS_U32), neg_from(MIN_AS_U32)) == GT, 0);
