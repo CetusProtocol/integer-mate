@@ -2,7 +2,7 @@
 # -------------------------------
 [package]
 name = "IntegerMate"
-version = "1.1.0"
+version = "testnet-v1.23.1"
 published-at = "0xf0784730d8c5397fde92149fde6d3c273c3375e614b57470ad43f286742593c2"
 
 [dependencies]
