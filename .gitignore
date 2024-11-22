@@ -1,5 +1,6 @@
 /sui/.idea
 /sui/sui.log.*
+/sui/Move.lock
 /aptos/.idea
 /aptos/.aptos
 /sui/build
