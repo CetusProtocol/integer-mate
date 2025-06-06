@@ -77,10 +77,10 @@ module integer_mate::i64 {
     }
 
     public fun sub(num1: I64, num2: I64): I64 {
-        let sub_num = wrapping_add(I64 {
-            bits: u64_neg(num2.bits)
-        }, from(1));
-        add(num1, sub_num)
+        let v = wrapping_sub(num1, num2);
+        let overflow = sign(num1) != sign(num2) && sign(num1) != sign(v);
+        assert!(!overflow, EOverflow);
+        v
     }
 
     public fun mul(num1: I64, num2: I64): I64 {

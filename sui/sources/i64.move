@@ -75,10 +75,10 @@ module integer_mate::i64 {
     }
 
     public fun sub(num1: I64, num2: I64): I64 {
-        let sub_num = wrapping_add(I64 {
-            bits: u64_neg(num2.bits)
-        }, from(1));
-        add(num1, sub_num)
+        let v = wrapping_sub(num1, num2);
+        let overflow = sign(num1) != sign(num2) && sign(num1) != sign(v);
+        assert!(!overflow, EOverflow);
+        v
     }
 
     public fun mul(num1: I64, num2: I64): I64 {
@@ -307,7 +307,20 @@ module integer_mate::i64 {
     #[test]
     #[expected_failure]
     fun test_add_overflow() {
+        // i64::MAX + 1
         add(from(MAX_AS_U64), from(1));
+
+        // 1 + i64::MAX
+        add(from(1), from(MAX_AS_U64));
+
+        // i64::MAX + 10000
+        add(from(MAX_AS_U64), from(10000));
+
+        // 10000 + i64::MAX
+        add(from(10000), from(MAX_AS_U64));
+
+        // i64::MAX + i64::MAX
+        add(from(MAX_AS_U64), from(MAX_AS_U64));
     }
 
     #[test]
@@ -352,14 +365,66 @@ module integer_mate::i64 {
 
     #[test]
     #[expected_failure]
-    fun test_sub_overflow() {
+    fun test_sub_overflow_0_min() {
+        // 1 - i32::MIN
+        sub(from(0), neg_from(MIN_AS_U64));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_1_min() {
+        // 1 - i32::MIN
+        sub(from(1), neg_from(MIN_AS_U64));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_1() {
+        sub(neg_from(MIN_AS_U64), from(1));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_max_n1() {
         sub(from(MAX_AS_U64), neg_from(1));
     }
 
     #[test]
     #[expected_failure]
-    fun test_sub_underflow() {
-        sub(neg_from(MIN_AS_U64), from(1));
+    fun test_sub_overflow_n2_max() {
+        sub(neg_from(2), from(MAX_AS_U64));
+    }
+
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_10000_min() {
+        //10000 - i32::MIN
+        sub(from(10000), neg_from(MIN_AS_U64));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_10000() {
+        sub(neg_from(MIN_AS_U64), from(10000));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_max() {
+        sub(neg_from(MIN_AS_U64), from(MAX_AS_U64));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_n1_min() {
+        add(neg_from(1), neg_from(MIN_AS_U64));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_min_n1() {
+        add(neg_from(MIN_AS_U64), neg_from(1));
     }
 
     #[test]

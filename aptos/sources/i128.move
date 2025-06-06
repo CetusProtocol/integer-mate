@@ -85,19 +85,15 @@ module integer_mate::i128 {
     }
     
     public fun sub(num1: I128, num2: I128): I128 {
-        let sub_num = wrapping_add(I128 {
-            bits: u128_neg(num2.bits)
-        }, from(1));
-        add(num1, sub_num)
+        let (v, overflow) = overflowing_sub(num1, num2);
+        assert!(!overflow, EOverflow);
+        v
     }
 
     public fun overflowing_sub(num1: I128, num2: I128): (I128, bool) {
-        let sub_num = wrapping_add(I128 {
-            bits: u128_neg(num2.bits)
-        }, from(1));
-        let sum = wrapping_add(num1, sub_num);
-        let overflow = (sign(num1) & sign(sub_num) & u8_neg(sign(sum))) + (u8_neg(sign(num1)) & u8_neg(sign(sub_num)) & sign(sum));
-        (sum, overflow != 0)
+        let v = wrapping_sub(num1, num2);
+        let overflow = sign(num1) != sign(num2) && sign(num1) != sign(v);
+        (v, overflow)
     }
 
     public fun mul(num1: I128, num2: I128): I128 {
