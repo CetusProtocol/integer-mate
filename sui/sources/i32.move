@@ -74,10 +74,10 @@ module integer_mate::i32 {
     }
 
     public fun sub(num1: I32, num2: I32): I32 {
-        let sub_num = wrapping_add(I32 {
-            bits: u32_neg(num2.bits)
-        }, from(1));
-        add(num1, sub_num)
+        let v = wrapping_sub(num1, num2);
+        let overflow = sign(num1) != sign(num2) && sign(num1) != sign(v);
+        assert!(!overflow, EOverflow);
+        v
     }
 
     public fun mul(num1: I32, num2: I32): I32 {
@@ -335,6 +335,10 @@ module integer_mate::i32 {
 
     #[test]
     fun test_sub() {
+        assert!(as_u32(sub(neg_from(1), neg_from(MIN_AS_U32))) == 2147483647, 0);
+        assert!(as_u32(sub(neg_from(MIN_AS_U32), neg_from(1))) == 2147483649, 0);
+        assert!(as_u32(sub(neg_from(10), neg_from(MIN_AS_U32))) == 2147483638, 0);
+        assert!(as_u32(sub(neg_from(MIN_AS_U32), neg_from(10))) == 2147483658, 0);
         assert!(as_u32(sub(from(0), from(0))) == 0, 0);
         assert!(as_u32(sub(from(1), from(0))) == 1, 0);
         assert!(as_u32(sub(from(0), from(1))) == as_u32(neg_from(1)), 0);
@@ -351,14 +355,66 @@ module integer_mate::i32 {
 
     #[test]
     #[expected_failure]
-    fun test_sub_overflow() {
+    fun test_sub_overflow_0_min() {
+        // 1 - i32::MIN
+        sub(from(0), neg_from(MIN_AS_U32));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_1_min() {
+        // 1 - i32::MIN
+        sub(from(1), neg_from(MIN_AS_U32));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_1() {
+        sub(neg_from(MIN_AS_U32), from(1));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_max_n1() {
         sub(from(MAX_AS_U32), neg_from(1));
     }
 
     #[test]
     #[expected_failure]
-    fun test_sub_underflow() {
-        sub(neg_from(MIN_AS_U32), from(1));
+    fun test_sub_overflow_n2_max() {
+        sub(neg_from(2), from(MAX_AS_U32));
+    }
+
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_10000_min() {
+        //10000 - i32::MIN
+        sub(from(10000), neg_from(MIN_AS_U32));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_10000() {
+        sub(neg_from(MIN_AS_U32), from(10000));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_max() {
+        sub(neg_from(MIN_AS_U32), from(MAX_AS_U32));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_n1_min() {
+        add(neg_from(1), neg_from(MIN_AS_U32));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_min_n1() {
+        add(neg_from(MIN_AS_U32), neg_from(1));
     }
 
     #[test]

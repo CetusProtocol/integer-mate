@@ -84,19 +84,15 @@ module integer_mate::i128 {
     }
     
     public fun sub(num1: I128, num2: I128): I128 {
-        let sub_num = wrapping_add(I128 {
-            bits: u128_neg(num2.bits)
-        }, from(1));
-        add(num1, sub_num)
+        let (v, overflow) = overflowing_sub(num1, num2);
+        assert!(!overflow, EOverflow);
+        v
     }
 
     public fun overflowing_sub(num1: I128, num2: I128): (I128, bool) {
-        let sub_num = wrapping_add(I128 {
-            bits: u128_neg(num2.bits)
-        }, from(1));
-        let sum = wrapping_add(num1, sub_num);
-        let overflow = (sign(num1) & sign(sub_num) & u8_neg(sign(sum))) + (u8_neg(sign(num1)) & u8_neg(sign(sub_num)) & sign(sum));
-        (sum, overflow != 0)
+        let v = wrapping_sub(num1, num2);
+        let overflow = sign(num1) != sign(num2) && sign(num1) != sign(v);
+        (v, overflow)
     }
 
     public fun mul(num1: I128, num2: I128): I128 {
@@ -336,14 +332,40 @@ module integer_mate::i128 {
         assert!(overflow == false && as_u128(result) == MAX_AS_U128 - 1, 1);
         let (_, overflow) = overflowing_add(from(MAX_AS_U128), from(1));
         assert!(overflow == true, 1);
+        let (_, overflow) = overflowing_add(from(1), from(MAX_AS_U128));
+        assert!(overflow == true, 1);
         let (_, overflow) = overflowing_add(neg_from(MIN_AS_U128), neg_from(1));
+        assert!(overflow == true, 1);
+        let (_, overflow) = overflowing_add(neg_from(1), neg_from(MIN_AS_U128));
+        assert!(overflow == true, 1);
+    }
+
+    #[test]
+    fun test_overflowing_sub() {
+        let (_result, overflow) = overflowing_sub(from(0), neg_from(MIN_AS_U128));
+        assert!(overflow == true, 1);
+        let (_result, overflow) = overflowing_sub(from(1), neg_from(MIN_AS_U128));
+        assert!(overflow == true, 1);
+        let (_result, overflow) = overflowing_sub(neg_from(MIN_AS_U128), from(1));
+        assert!(overflow == true, 1);
+        let (_result, overflow) = overflowing_sub(neg_from(MIN_AS_U128), from(0));
+        assert!(overflow == false, 1);
+        let (_result, overflow) = overflowing_sub(from(MAX_AS_U128), neg_from(1));
+        assert!(overflow == true, 1);
+        let (_result, overflow) = overflowing_sub(neg_from(2), from(MAX_AS_U128));
         assert!(overflow == true, 1);
     }
 
     #[test]
     #[expected_failure]
-    fun test_add_overflow() {
+    fun test_add_overflow_max_1() {
         add(from(MAX_AS_U128), from(1));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_1_max() {
+        add(from(1), from(MAX_AS_U128));
     }
 
     #[test]
@@ -400,14 +422,66 @@ module integer_mate::i128 {
 
     #[test]
     #[expected_failure]
-    fun test_sub_overflow() {
+    fun test_sub_overflow_0_min() {
+        // 1 - i32::MIN
+        sub(from(0), neg_from(MIN_AS_U128));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_1_min() {
+        // 1 - i32::MIN
+        sub(from(1), neg_from(MIN_AS_U128));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_1() {
+        sub(neg_from(MIN_AS_U128), from(1));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_max_n1() {
         sub(from(MAX_AS_U128), neg_from(1));
     }
 
     #[test]
     #[expected_failure]
-    fun test_sub_underflow() {
-        sub(neg_from(MIN_AS_U128), from(1));
+    fun test_sub_overflow_n2_max() {
+        sub(neg_from(2), from(MAX_AS_U128));
+    }
+
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_10000_min() {
+        //10000 - i32::MIN
+        sub(from(10000), neg_from(MIN_AS_U128));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_10000() {
+        sub(neg_from(MIN_AS_U128), from(10000));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_sub_overflow_min_max() {
+        sub(neg_from(MIN_AS_U128), from(MAX_AS_U128));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_n1_min() {
+        add(neg_from(1), neg_from(MIN_AS_U128));
+    }
+
+    #[test]
+    #[expected_failure]
+    fun test_add_overflow_min_n1() {
+        add(neg_from(MIN_AS_U128), neg_from(1));
     }
 
     #[test]
