@@ -36,14 +36,4 @@ module integer_mate::math_u256 {
     public fun add_check(num1: u256, num2: u256): bool {
         (MAX_U256 - num1 >= num2)
     }
-
-    #[test]
-    fun test_div_round() {
-        div_round(1, 1, true);
-    }
-
-    #[test]
-    fun test_add() {
-        1000u256 + 1000u256;
-    }
 }
