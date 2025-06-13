@@ -1,0 +1,40 @@
+--- ./sources/i128.move
++++ ./sources/i128.move
+@@ -14 +14 @@
+-    struct I128 has copy, drop, store {
++    public struct I128 has copy, drop, store {
+@@ -53,2 +53,2 @@
+-        let sum = num1.bits ^ num2.bits;
+-        let carry = (num1.bits & num2.bits) << 1;
++        let mut sum = num1.bits ^ num2.bits;
++        let mut carry = (num1.bits & num2.bits) << 1;
+--- ./sources/i32.move
++++ ./sources/i32.move
+@@ -11 +11 @@
+-    struct I32 has copy, drop, store {
++    public struct I32 has copy, drop, store {
+@@ -48,2 +48,2 @@
+-        let sum = num1.bits ^ num2.bits;
+-        let carry = (num1.bits & num2.bits) << 1;
++        let mut sum = num1.bits ^ num2.bits;
++        let mut carry = (num1.bits & num2.bits) << 1;
+--- ./sources/i64.move
++++ ./sources/i64.move
+@@ -11 +11 @@
+-    struct I64 has copy, drop, store {
++    public struct I64 has copy, drop, store {
+@@ -48,2 +48,2 @@
+-        let sum = num1.bits ^ num2.bits;
+-        let carry = (num1.bits & num2.bits) << 1;
++        let mut sum = num1.bits ^ num2.bits;
++        let mut carry = (num1.bits & num2.bits) << 1;
+--- ./tests/i32_tests.move
++++ ./tests/i32_tests.move
+@@ -733 +733 @@
+-        let i = mod(neg_from(2), from(5));
++        let mut i = mod(neg_from(2), from(5));
+--- ./tests/i64_tests.move
++++ ./tests/i64_tests.move
+@@ -622 +622 @@
+-        let i = mod(neg_from(2), from(5));
++        let mut i = mod(neg_from(2), from(5));

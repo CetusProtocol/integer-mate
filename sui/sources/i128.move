@@ -11,7 +11,7 @@ module integer_mate::i128 {
     const EQ: u8 = 1;
     const GT: u8 = 2;
 
-    struct I128 has copy, drop, store {
+    public struct I128 has copy, drop, store {
         bits: u128
     }
 
@@ -50,8 +50,8 @@ module integer_mate::i128 {
     }
 
     public fun wrapping_add(num1: I128, num2:I128): I128 {
-        let sum = num1.bits ^ num2.bits;
-        let carry = (num1.bits & num2.bits) << 1;
+        let mut sum = num1.bits ^ num2.bits;
+        let mut carry = (num1.bits & num2.bits) << 1;
         while (carry != 0) {
             let a = sum;
             let b = carry;

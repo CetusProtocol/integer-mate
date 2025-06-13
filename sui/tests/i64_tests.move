@@ -619,7 +619,7 @@ module integer_mate::i64_tests {
     #[test]
     fun test_mod() {
         //use aptos_std::debug;
-        let i = mod(neg_from(2), from(5));
+        let mut i = mod(neg_from(2), from(5));
         assert!(cmp(i, neg_from(2)) == EQ, 0);
 
         i = mod(neg_from(2), neg_from(5));

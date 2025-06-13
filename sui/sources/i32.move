@@ -8,7 +8,7 @@ module integer_mate::i32 {
     const EQ: u8 = 1;
     const GT: u8 = 2;
 
-    struct I32 has copy, drop, store {
+    public struct I32 has copy, drop, store {
         bits: u32
     }
 
@@ -45,8 +45,8 @@ module integer_mate::i32 {
     }
 
     public fun wrapping_add(num1: I32, num2: I32): I32 {
-        let sum = num1.bits ^ num2.bits;
-        let carry = (num1.bits & num2.bits) << 1;
+        let mut sum = num1.bits ^ num2.bits;
+        let mut carry = (num1.bits & num2.bits) << 1;
         while (carry != 0) {
             let a = sum;
             let b = carry;

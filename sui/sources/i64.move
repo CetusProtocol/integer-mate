@@ -8,7 +8,7 @@ module integer_mate::i64 {
     const EQ: u8 = 1;
     const GT: u8 = 2;
 
-    struct I64 has copy, drop, store {
+    public struct I64 has copy, drop, store {
         bits: u64
     }
 
@@ -45,8 +45,8 @@ module integer_mate::i64 {
     }
 
     public fun wrapping_add(num1: I64, num2: I64): I64 {
-        let sum = num1.bits ^ num2.bits;
-        let carry = (num1.bits & num2.bits) << 1;
+        let mut sum = num1.bits ^ num2.bits;
+        let mut carry = (num1.bits & num2.bits) << 1;
         while (carry != 0) {
             let a = sum;
             let b = carry;
