@@ -86,7 +86,7 @@ module integer_mate::i128 {
     
     public fun sub(num1: I128, num2: I128): I128 {
         let (v, overflow) = overflowing_sub(num1, num2);
-        assert!(!overflow, EOverflow);
+        assert!(!overflow, OVERFLOW);
         v
     }
 
