@@ -7,3 +7,5 @@
 /build
 /.idea
 /.aptos
+/sui/.coverage_map.mvcov
+/sui/.trace
