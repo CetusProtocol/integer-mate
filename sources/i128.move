@@ -154,7 +154,8 @@ module integer_mate::i128 {
     public fun as_u128(v: I128): u128 {
         v.bits
     }
-
+    
+    #[allow(dead_code)]
     public fun as_i64(v: I128): i64::I64 {
         if (is_neg(v)) {
            return i64::neg_from((abs_u128(v) as u64))
@@ -162,7 +163,8 @@ module integer_mate::i128 {
             return i64::from((abs_u128(v) as u64))
         }
     }
-
+  
+    #[allow(dead_code)]
     public fun as_i32(v: I128): i32::I32 {
         if (is_neg(v)) {
             return i32::neg_from((abs_u128(v) as u32))
